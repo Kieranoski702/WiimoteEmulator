@@ -12,9 +12,8 @@
 #include "src/device.h"
 #include "src/log.h"
 
-static ssize_t wmemu_pincb(struct btd_adapter *adapter, struct btd_device *device,
-						char *pinbuf, bool *display,
-						unsigned int attempt)
+long int wmemu_pincb(struct btd_adapter *adapter, struct btd_device *device,
+                     char *pinbuf, int *user_io_capability)
 {
 	//force Wii pin (bdaddr bytes backwards)
 	//very basic, no filtering, does this for all devices

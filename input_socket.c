@@ -114,7 +114,7 @@ static bool input_socket_poll_event(struct input_event *event)
     }
   }
   buf[buf_len] = '\0';
-  printf("received %d bytes: %s\n", buf_len, buf);
+  //printf("received %d bytes: %s\n", buf_len, buf);
 
   event->type = INPUT_EVENT_TYPE_BUTTON;
 
