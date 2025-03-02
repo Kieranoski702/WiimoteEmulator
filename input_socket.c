@@ -1,4 +1,5 @@
 #include "input_socket.h"
+#include "motion.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netdb.h>
@@ -119,10 +120,9 @@ static bool input_socket_poll_event(struct input_event *event) {
     float y = ntohf(net_y);
 
     event->type = INPUT_EVENT_TYPE_ANALOG_MOTION;
-    event->analog_motion_event.moving = 1;
     event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER;
-    event->analog_motion_event.delta_x = x;
-    event->analog_motion_event.delta_y = y;
+    event->analog_motion_event.x = x;
+    event->analog_motion_event.y = y;
 
     buf_len = 0;
     return true;
