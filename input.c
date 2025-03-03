@@ -161,10 +161,10 @@ int input_update(struct wiimote_state *state,
       case INPUT_ANALOG_MOTION_POINTER:
         /* pointer_delta_x = event.analog_motion_event.delta_x; */
         /* pointer_delta_y = event.analog_motion_event.delta_y; */
-        printf("pointer: %f %f\n", event.analog_motion_event.x,
-               event.analog_motion_event.y);
-        pointer_x = event.analog_motion_event.x;
-        pointer_y = event.analog_motion_event.y;
+        /* printf("pointer: %f %f\n", event.analog_motion_event.x, */
+        /*        event.analog_motion_event.y); */
+        /* pointer_x = event.analog_motion_event.x; */
+        /* pointer_y = event.analog_motion_event.y; */
         break;
       case INPUT_ANALOG_MOTION_IR_UP:
         ir_up = moving;
@@ -262,7 +262,7 @@ int input_update(struct wiimote_state *state,
    */
 
   /* set_motion_state(state, pointer_x, pointer_y); */
-  set_exact_pointer_state(state, pointer_x, pointer_y);
+  /* set_exact_pointer_state(state, pointer_x, pointer_y); */
 
   state->usr.nunchuk.x = 128 + nunchuk_right * 100 - nunchuk_left * 100;
   state->usr.nunchuk.y = 128 + nunchuk_up * 100 - nunchuk_down * 100;

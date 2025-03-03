@@ -108,21 +108,21 @@ static bool input_socket_poll_event(struct input_event *event) {
   /* Check for a binary pointer update packet:
    * Format: [1 byte type 0x01] + [4 bytes float x] + [4 bytes float y] = 9
    * bytes */
-  if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) {
-    printf("Received binary pointer update packet\n");
-    uint32_t net_x, net_y;
-    memcpy(&net_x, buf + 1, 4);
-    memcpy(&net_y, buf + 5, 4);
-    float x = ntohf(net_x);
-    float y = ntohf(net_y);
+  /* if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) { */
+  /*   printf("Received binary pointer update packet\n"); */
+  /*   uint32_t net_x, net_y; */
+  /*   memcpy(&net_x, buf + 1, 4); */
+  /*   memcpy(&net_y, buf + 5, 4); */
+  /*   float x = ntohf(net_x); */
+  /*   float y = ntohf(net_y); */
 
-    event->type = INPUT_EVENT_TYPE_ANALOG_MOTION;
-    event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER;
-    event->analog_motion_event.x = x;
-    event->analog_motion_event.y = y;
-    buf_len = 0;
-    return true;
-  }
+  /*   event->type = INPUT_EVENT_TYPE_ANALOG_MOTION; */
+  /*   event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER; */
+  /*   event->analog_motion_event.x = x; */
+  /*   event->analog_motion_event.y = y; */
+  /*   buf_len = 0; */
+  /*   return true; */
+  /* } */
   /* New: Check for a binary IR update packet:
    * Format: [1 byte type 0x02] + [4 bytes float x] + [4 bytes float y] + [4
    * bytes float z] = 13 bytes */
