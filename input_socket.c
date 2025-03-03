@@ -108,21 +108,21 @@ static bool input_socket_poll_event(struct input_event *event) {
   /* Check for a binary pointer update packet:
    * Format: [1 byte type 0x01] + [4 bytes float x] + [4 bytes float y] = 9
    * bytes */
-  /* if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) { */
-  /*   printf("Received binary pointer update packet\n"); */
-  /*   uint32_t net_x, net_y; */
-  /*   memcpy(&net_x, buf + 1, 4); */
-  /*   memcpy(&net_y, buf + 5, 4); */
-  /*   float x = ntohf(net_x); */
-  /*   float y = ntohf(net_y); */
+  if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) {
+    /* printf("Received binary pointer update packet\n"); */
+    /* uint32_t net_x, net_y; */
+    /* memcpy(&net_x, buf + 1, 4); */
+    /* memcpy(&net_y, buf + 5, 4); */
+    /* float x = ntohf(net_x); */
+    /* float y = ntohf(net_y); */
 
-  /*   event->type = INPUT_EVENT_TYPE_ANALOG_MOTION; */
-  /*   event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER; */
-  /*   event->analog_motion_event.x = x; */
-  /*   event->analog_motion_event.y = y; */
-  /*   buf_len = 0; */
-  /*   return true; */
-  /* } */
+    /* event->type = INPUT_EVENT_TYPE_ANALOG_MOTION; */
+    /* event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER; */
+    /* event->analog_motion_event.x = x; */
+    /* event->analog_motion_event.y = y; */
+    /* buf_len = 0; */
+    /* return true; */
+  }
   /* New: Check for a binary IR update packet:
    * Format: [1 byte type 0x02] + [4 bytes float x] + [4 bytes float y] + [4
    * bytes float z] = 13 bytes */
@@ -147,6 +147,31 @@ static bool input_socket_poll_event(struct input_event *event) {
     event->analog_motion_event.y = ir_y;
     /* Assume you have added a 'z' field in the analog_motion_event structure */
     /* event->analog_motion_event.z = ir_z; */
+    buf_len = 0;
+    return true;
+  }
+  /* New: Check for a binary accelerometer update packet:
+   * Format: [1 byte type 0x03] + [4 bytes float ax] + [4 bytes float ay] + [4
+   * bytes float az] = 13 bytes */
+  else if (buf_len >= 13 && ((unsigned char)buf[0]) == 0x03) {
+    printf("Received binary accelerometer update packet\n");
+    uint32_t net_ax, net_ay, net_az;
+    memcpy(&net_ax, buf + 1, 4);
+    memcpy(&net_ay, buf + 5, 4);
+    memcpy(&net_az, buf + 9, 4);
+    float ax = ntohf(net_ax);
+    float ay = ntohf(net_ay);
+    float az = ntohf(net_az);
+    event->type = INPUT_EVENT_TYPE_ANALOG_MOTION;
+    /*
+       Define a new motion code for accelerometer events.
+       For example, in your input.h, add:
+         #define INPUT_ANALOG_MOTION_ACCEL  101
+    */
+    event->analog_motion_event.motion = INPUT_ANALOG_MOTION_ACCEL;
+    event->analog_motion_event.x = ax;
+    event->analog_motion_event.y = ay;
+    event->analog_motion_event.z = az;
     buf_len = 0;
     return true;
   } else {

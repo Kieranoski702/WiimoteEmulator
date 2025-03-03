@@ -14,6 +14,8 @@ extern int show_reports;
 static const double pointer_margin = 0.5;
 float pointer_x = 0.5;
 float pointer_y = 0.5;
+static const uint16_t accelerometer_zero = 0x85 << 2;
+static const uint16_t accelerometer_unit = 0x6C;
 
 int input_update(struct wiimote_state *state,
                  struct input_source const *source) {
@@ -196,6 +198,27 @@ int input_update(struct wiimote_state *state,
           (Adjust this mapping to match your device’s characteristics.) */
         /* state->usr.ir_object[0].size = round(1.0 +
          * event.analog_motion_event.z * 14); */
+        break;
+      }
+
+      case INPUT_ANALOG_MOTION_ACCEL: {
+
+        event.analog_motion_event.x =
+            fmax(-3.4, fmin(3.4, event.analog_motion_event.x));
+        event.analog_motion_event.y =
+            fmax(-3.4, fmin(3.4, event.analog_motion_event.y));
+        event.analog_motion_event.z =
+            fmax(-3.4, fmin(3.4, event.analog_motion_event.z));
+
+        state->usr.accel_x =
+            accelerometer_zero +
+            (int)round(accelerometer_unit * -event.analog_motion_event.x);
+        state->usr.accel_y =
+            accelerometer_zero +
+            (int)round(accelerometer_unit * event.analog_motion_event.z);
+        state->usr.accel_z =
+            accelerometer_zero +
+            (int)round(accelerometer_unit * -event.analog_motion_event.y);
         break;
       }
 
