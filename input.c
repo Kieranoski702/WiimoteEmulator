@@ -288,7 +288,6 @@ int input_update(struct wiimote_state *state,
   /*                  fmin(1.0 + pointer_margin, pointer_y + pointer_delta_y));
    */
 
-  printf("pointer: %f %f\n", pointer_x, pointer_y);
   set_motion_state(state, pointer_x, pointer_y);
   /* set_exact_pointer_state(state, pointer_x, pointer_y); */
 
