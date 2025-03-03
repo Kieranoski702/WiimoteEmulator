@@ -109,6 +109,7 @@ static bool input_socket_poll_event(struct input_event *event) {
    * Format: [1 byte type 0x01] + [4 bytes float x] + [4 bytes float y] = 9
    * bytes */
   if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) {
+    printf("Received binary pointer update packet\n");
     uint32_t net_x, net_y;
     memcpy(&net_x, buf + 1, 4);
     memcpy(&net_y, buf + 5, 4);
@@ -126,6 +127,7 @@ static bool input_socket_poll_event(struct input_event *event) {
    * Format: [1 byte type 0x02] + [4 bytes float x] + [4 bytes float y] + [4
    * bytes float z] = 13 bytes */
   else if (buf_len >= 13 && ((unsigned char)buf[0]) == 0x02) {
+    printf("Received binary IR update packet\n");
     uint32_t net_x, net_y, net_z;
     memcpy(&net_x, buf + 1, 4);
     memcpy(&net_y, buf + 5, 4);

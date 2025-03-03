@@ -161,6 +161,8 @@ int input_update(struct wiimote_state *state,
       case INPUT_ANALOG_MOTION_POINTER:
         /* pointer_delta_x = event.analog_motion_event.delta_x; */
         /* pointer_delta_y = event.analog_motion_event.delta_y; */
+        printf("pointer: %f %f\n", event.analog_motion_event.x,
+               event.analog_motion_event.y);
         pointer_x = event.analog_motion_event.x;
         pointer_y = event.analog_motion_event.y;
         break;
@@ -182,6 +184,8 @@ int input_update(struct wiimote_state *state,
           For example, assume the IR x and y are normalized in [0,1] and z
           represents an intensity or size.
         */
+        printf("IR RAW: %f %f\n", event.analog_motion_event.x,
+               event.analog_motion_event.y);
         state->usr.ir_object[0].x = round(event.analog_motion_event.x * 1023);
         state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
         /* Map the IR z value to a size between, say, 1 and 15.
