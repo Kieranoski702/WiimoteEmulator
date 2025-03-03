@@ -255,15 +255,13 @@ int input_update(struct wiimote_state *state,
     }
   }
 
-  /* pointer_delta_x += ir_right * 0.004 - ir_left * 0.004; */
-  /* pointer_delta_y += ir_up * 0.004 - ir_down * 0.004; */
+  pointer_delta_x += ir_right * 0.004 - ir_left * 0.004;
+  pointer_delta_y += ir_up * 0.004 - ir_down * 0.004;
 
-  /* pointer_x = fmax(-pointer_margin, */
-  /*                  fmin(1.0 + pointer_margin, pointer_x + pointer_delta_x));
-   */
-  /* pointer_y = fmax(-pointer_margin, */
-  /*                  fmin(1.0 + pointer_margin, pointer_y + pointer_delta_y));
-   */
+  pointer_x = fmax(-pointer_margin,
+                   fmin(1.0 + pointer_margin, pointer_x + pointer_delta_x));
+  pointer_y = fmax(-pointer_margin,
+                   fmin(1.0 + pointer_margin, pointer_y + pointer_delta_y));
 
   set_motion_state(state, pointer_x, pointer_y);
   /* set_exact_pointer_state(state, pointer_x, pointer_y); */
