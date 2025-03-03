@@ -205,12 +205,12 @@ int input_update(struct wiimote_state *state,
         printf("ACCEL: %f %f %f\n", event.analog_motion_event.x,
                event.analog_motion_event.y, event.analog_motion_event.z);
 
-        event.analog_motion_event.x =
-            fmax(-3.4, fmin(3.4, event.analog_motion_event.x));
-        event.analog_motion_event.y =
-            fmax(-3.4, fmin(3.4, event.analog_motion_event.y));
-        event.analog_motion_event.z =
-            fmax(-3.4, fmin(3.4, event.analog_motion_event.z));
+        /* event.analog_motion_event.x = */
+        /*     fmax(-3.4, fmin(3.4, event.analog_motion_event.x)); */
+        /* event.analog_motion_event.y = */
+        /*     fmax(-3.4, fmin(3.4, event.analog_motion_event.y)); */
+        /* event.analog_motion_event.z = */
+        /*     fmax(-3.4, fmin(3.4, event.analog_motion_event.z)); */
 
         state->usr.accel_x =
             accelerometer_zero +
