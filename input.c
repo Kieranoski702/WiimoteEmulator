@@ -202,6 +202,8 @@ int input_update(struct wiimote_state *state,
       }
 
       case INPUT_ANALOG_MOTION_ACCEL: {
+        printf("ACCEL: %f %f %f\n", event.analog_motion_event.x,
+               event.analog_motion_event.y, event.analog_motion_event.z);
 
         event.analog_motion_event.x =
             fmax(-3.4, fmin(3.4, event.analog_motion_event.x));
