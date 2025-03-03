@@ -136,8 +136,8 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
 
   if (sensor_pt1.x > 0 && sensor_pt1.x < 1 && sensor_pt1.y > 0 &&
       sensor_pt1.y < 1 && sensor_pt1.z > 0 && sensor_pt1.z < 1) {
-    state->usr.ir_object[1].x = round(sensor_pt1.x * 1023);
-    state->usr.ir_object[1].y = round(sensor_pt1.y * 767);
+    state->usr.ir_object[1].x = round(sensor_pt1.x * 1920);
+    state->usr.ir_object[1].y = round(sensor_pt1.y * 1080);
     state->usr.ir_object[1].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt1.z, 2.0) * (max_pt_size - min_pt_size));
