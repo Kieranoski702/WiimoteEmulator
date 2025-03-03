@@ -222,6 +222,9 @@ int input_update(struct wiimote_state *state,
             accelerometer_zero +
             (int)round(accelerometer_unit * -event.analog_motion_event.y);
 
+        printf("ACCEL: %d %d %d\n", state->usr.accel_x, state->usr.accel_y,
+               state->usr.accel_z);
+
         /* state->usr.accel_x = event.analog_motion_event.x; */
         /* state->usr.accel_y = event.analog_motion_event.y; */
         /* state->usr.accel_z = event.analog_motion_event.z; */
