@@ -176,6 +176,20 @@ int input_update(struct wiimote_state *state,
       case INPUT_ANALOG_MOTION_IR_RIGHT:
         ir_right = moving;
         break;
+      case INPUT_ANALOG_MOTION_IR_RAW: {
+        /*
+          Use the received IR values to update the wiimote’s IR object.
+          For example, assume the IR x and y are normalized in [0,1] and z
+          represents an intensity or size.
+        */
+        state->usr.ir_object[0].x = round(event.analog_motion_event.x * 1023);
+        state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
+        /* Map the IR z value to a size between, say, 1 and 15.
+          (Adjust this mapping to match your device’s characteristics.) */
+        /* state->usr.ir_object[0].size = round(1.0 +
+         * event.analog_motion_event.z * 14); */
+        break;
+      }
 
       case INPUT_ANALOG_MOTION_STEER_LEFT:
         steer_left = moving;

@@ -105,13 +105,9 @@ static bool input_socket_poll_event(struct input_event *event) {
     }
   }
 
-  /*
-   * Check for a binary packet:
-   * Our new binary pointer update packet is defined as:
-   *   [1 byte event type] + [4 bytes float x] + [4 bytes float y] = 9 bytes
-   * total. If the packet length is >= 9 and the first byte is 0x01, we assume
-   * it’s the binary pointer update.
-   */
+  /* Check for a binary pointer update packet:
+   * Format: [1 byte type 0x01] + [4 bytes float x] + [4 bytes float y] = 9
+   * bytes */
   if (buf_len >= 9 && ((unsigned char)buf[0]) == 0x01) {
     uint32_t net_x, net_y;
     memcpy(&net_x, buf + 1, 4);
@@ -123,7 +119,32 @@ static bool input_socket_poll_event(struct input_event *event) {
     event->analog_motion_event.motion = INPUT_ANALOG_MOTION_POINTER;
     event->analog_motion_event.x = x;
     event->analog_motion_event.y = y;
+    buf_len = 0;
+    return true;
+  }
+  /* New: Check for a binary IR update packet:
+   * Format: [1 byte type 0x02] + [4 bytes float x] + [4 bytes float y] + [4
+   * bytes float z] = 13 bytes */
+  else if (buf_len >= 13 && ((unsigned char)buf[0]) == 0x02) {
+    uint32_t net_x, net_y, net_z;
+    memcpy(&net_x, buf + 1, 4);
+    memcpy(&net_y, buf + 5, 4);
+    memcpy(&net_z, buf + 9, 4);
+    float ir_x = ntohf(net_x);
+    float ir_y = ntohf(net_y);
+    float ir_z = ntohf(net_z);
 
+    event->type = INPUT_EVENT_TYPE_ANALOG_MOTION;
+    /*
+       Define a new motion code (e.g. in your input.h) for IR raw events.
+       For example:
+         #define INPUT_ANALOG_MOTION_IR_RAW  100
+    */
+    event->analog_motion_event.motion = INPUT_ANALOG_MOTION_IR_RAW;
+    event->analog_motion_event.x = ir_x;
+    event->analog_motion_event.y = ir_y;
+    /* Assume you have added a 'z' field in the analog_motion_event structure */
+    /* event->analog_motion_event.z = ir_z; */
     buf_len = 0;
     return true;
   } else {
