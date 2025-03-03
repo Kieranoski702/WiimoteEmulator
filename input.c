@@ -186,8 +186,12 @@ int input_update(struct wiimote_state *state,
         */
         printf("IR RAW: %f %f\n", event.analog_motion_event.x,
                event.analog_motion_event.y);
-        state->usr.ir_object[0].x = round(event.analog_motion_event.x * 1023);
-        state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
+        /* state->usr.ir_object[0].x = round(event.analog_motion_event.x *
+         * 1023); */
+        /* state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
+         */
+        pointer_x = event.analog_motion_event.x;
+        pointer_y = event.analog_motion_event.y;
         /* Map the IR z value to a size between, say, 1 and 15.
           (Adjust this mapping to match your device’s characteristics.) */
         /* state->usr.ir_object[0].size = round(1.0 +
@@ -261,7 +265,7 @@ int input_update(struct wiimote_state *state,
   /*                  fmin(1.0 + pointer_margin, pointer_y + pointer_delta_y));
    */
 
-  /* set_motion_state(state, pointer_x, pointer_y); */
+  set_motion_state(state, pointer_x, pointer_y);
   /* set_exact_pointer_state(state, pointer_x, pointer_y); */
 
   state->usr.nunchuk.x = 128 + nunchuk_right * 100 - nunchuk_left * 100;
