@@ -143,7 +143,7 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
               pow(1.0 - sensor_pt1.z, 2.0) * (max_pt_size - min_pt_size));
   }
 
-  set_accelerometer(state, &wiimote_mat);
+  /* set_accelerometer(state, &wiimote_mat); */
 }
 
 void set_exact_pointer_state(struct wiimote_state *state, float pointer_x,
