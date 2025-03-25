@@ -186,8 +186,8 @@ int input_update(struct wiimote_state *state,
           For example, assume the IR x and y are normalized in [0,1] and z
           represents an intensity or size.
         */
-        printf("IR RAW: %f %f\n", event.analog_motion_event.x,
-               event.analog_motion_event.y);
+        /* printf("IR RAW: %f %f\n", event.analog_motion_event.x, */
+        /*        event.analog_motion_event.y); */
         /* state->usr.ir_object[0].x = round(event.analog_motion_event.x *
          * 1023); */
         /* state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
@@ -202,8 +202,8 @@ int input_update(struct wiimote_state *state,
       }
 
       case INPUT_ANALOG_MOTION_ACCEL: {
-        printf("ACCEL: %f %f %f\n", event.analog_motion_event.x,
-               event.analog_motion_event.y, event.analog_motion_event.z);
+        /* printf("ACCEL: %f %f %f\n", event.analog_motion_event.x, */
+        /*        event.analog_motion_event.y, event.analog_motion_event.z); */
 
         /* event.analog_motion_event.x = */
         /*     fmax(-3.4, fmin(3.4, event.analog_motion_event.x)); */
@@ -226,8 +226,9 @@ int input_update(struct wiimote_state *state,
         state->usr.accel_y = event.analog_motion_event.y;
         state->usr.accel_z = event.analog_motion_event.z;
 
-        printf("ACCEL: %d %d %d\n", state->usr.accel_x, state->usr.accel_y,
-               state->usr.accel_z);
+        /* printf("ACCEL: %d %d %d\n", state->usr.accel_x, state->usr.accel_y,
+         */
+        /*        state->usr.accel_z); */
 
         break;
       }
