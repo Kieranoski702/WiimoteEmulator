@@ -130,7 +130,7 @@ static bool input_socket_poll_event(struct input_event *event) {
    * Format: [1 byte type 0x02] + [4 bytes float ax] + [4 bytes float ay] + [4
    * bytes float az] = 13 bytes */
   else if (buf_len >= 13 && ((unsigned char)buf[0]) == 0x02) {
-    printf("Received binary accelerometer update packet\n");
+    /* printf("Received binary accelerometer update packet\n"); */
     uint32_t net_ax, net_ay, net_az;
     memcpy(&net_ax, buf + 1, 4);
     memcpy(&net_ay, buf + 5, 4);
