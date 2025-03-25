@@ -7,7 +7,7 @@ static const double screen_distance = 2;
 static const double screen_width = 1.0;
 static const double screen_aspect = 4.0 / 3.0;
 
-static const double sensor_bar_y = 1.0 - screen_width / screen_aspect * 0.5;
+static const double sensor_bar_y = screen_width / screen_aspect * 0.5;
 static const double sensor_bar_width = 0.20;
 
 static const double cam_aspect = 1024.0 / 768.0;
@@ -128,7 +128,7 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   if (sensor_pt0.x > 0 && sensor_pt0.x < 1 && sensor_pt0.y > 0 &&
       sensor_pt0.y < 1 && sensor_pt0.z > 0 && sensor_pt0.z < 1) {
     state->usr.ir_object[0].x = round(sensor_pt0.x * 1023);
-    state->usr.ir_object[0].y = round(sensor_pt0.y * 767);
+    state->usr.ir_object[0].y = round((1.0 - sensor_pt0.y) * 767);
     state->usr.ir_object[0].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt0.z, 2.0) * (max_pt_size - min_pt_size));
@@ -137,7 +137,8 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   if (sensor_pt1.x > 0 && sensor_pt1.x < 1 && sensor_pt1.y > 0 &&
       sensor_pt1.y < 1 && sensor_pt1.z > 0 && sensor_pt1.z < 1) {
     state->usr.ir_object[1].x = round(sensor_pt1.x * 1023);
-    state->usr.ir_object[1].y = round(sensor_pt1.y * 767);
+    state->usr.ir_object[1].y = round((1.0 - sensor_pt1.y) * 767);
+
     state->usr.ir_object[1].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt1.z, 2.0) * (max_pt_size - min_pt_size));
