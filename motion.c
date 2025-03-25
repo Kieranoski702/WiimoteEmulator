@@ -20,8 +20,7 @@ static const uint16_t accelerometer_unit = 0x6C;
 
 void look_at_pointer(mat4 *wiimote_mat, float pointer_x, float pointer_y) {
   vec3 pointer_world = {(pointer_x - 0.5) * screen_width,
-                        (pointer_y - 0.5) * screen_width / screen_aspect,
-                        -screen_distance};
+                        (pointer_y - 0.5) * screen_width, -screen_distance};
 
   vec3 dir = {pointer_world.x, pointer_world.y, pointer_world.z};
   vec3_normalize(&dir);
@@ -128,7 +127,7 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   if (sensor_pt0.x > 0 && sensor_pt0.x < 1 && sensor_pt0.y > 0 &&
       sensor_pt0.y < 1 && sensor_pt0.z > 0 && sensor_pt0.z < 1) {
     state->usr.ir_object[0].x = round(sensor_pt0.x * 1023);
-    state->usr.ir_object[0].y = round(sensor_pt0.y * 1023);
+    state->usr.ir_object[0].y = round(sensor_pt0.y * 767);
     state->usr.ir_object[0].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt0.z, 2.0) * (max_pt_size - min_pt_size));
@@ -137,7 +136,7 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   if (sensor_pt1.x > 0 && sensor_pt1.x < 1 && sensor_pt1.y > 0 &&
       sensor_pt1.y < 1 && sensor_pt1.z > 0 && sensor_pt1.z < 1) {
     state->usr.ir_object[1].x = round(sensor_pt1.x * 1023);
-    state->usr.ir_object[1].y = round(sensor_pt1.y * 1023);
+    state->usr.ir_object[1].y = round(sensor_pt1.y * 767);
     state->usr.ir_object[1].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt1.z, 2.0) * (max_pt_size - min_pt_size));
