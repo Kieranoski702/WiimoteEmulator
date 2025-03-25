@@ -128,7 +128,7 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   if (sensor_pt0.x > 0 && sensor_pt0.x < 1 && sensor_pt0.y > 0 &&
       sensor_pt0.y < 1 && sensor_pt0.z > 0 && sensor_pt0.z < 1) {
     state->usr.ir_object[0].x = round(sensor_pt0.x * 1023);
-    state->usr.ir_object[0].y = round(sensor_pt0.y * 767);
+    state->usr.ir_object[0].y = round((1.0 - sensor_pt0.y) * 767);
     state->usr.ir_object[0].size =
         round(min_pt_size +
               pow(1.0 - sensor_pt0.z, 2.0) * (max_pt_size - min_pt_size));
@@ -144,14 +144,4 @@ void set_motion_state(struct wiimote_state *state, float pointer_x,
   }
 
   /* set_accelerometer(state, &wiimote_mat); */
-}
-
-void set_exact_pointer_state(struct wiimote_state *state, float pointer_x,
-                             float pointer_y) {
-  // Directly map pointer_x, pointer_y in [0,1] to the full range expected by
-  // the host.
-  state->usr.ir_object[0].x = round(pointer_x * 1023);
-  state->usr.ir_object[0].y = round(pointer_y * 767);
-  // Optionally set a fixed size or calculate one based on your criteria.
-  state->usr.ir_object[0].size = 10; // adjust as needed
 }

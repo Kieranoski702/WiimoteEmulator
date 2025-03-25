@@ -5,7 +5,5 @@
 
 void set_motion_state(struct wiimote_state *state, float pointer_x,
                       float pointer_y);
-void set_exact_pointer_state(struct wiimote_state *state, float pointer_x,
-                             float pointer_y);
 
 #endif
