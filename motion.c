@@ -7,7 +7,7 @@ static const double screen_distance = 2;
 static const double screen_width = 1.0;
 static const double screen_aspect = 4.0 / 3.0;
 
-static const double sensor_bar_y = screen_width / screen_aspect * 0.5;
+static const double sensor_bar_y = 1.0 - screen_width / screen_aspect * 0.5;
 static const double sensor_bar_width = 0.20;
 
 static const double cam_aspect = 1024.0 / 768.0;
