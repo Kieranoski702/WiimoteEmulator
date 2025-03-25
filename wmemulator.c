@@ -295,7 +295,7 @@ int main(int argc, char *argv[]) {
       pfd[5].events |= POLLOUT;
     }
 
-    if (poll(pfd, 6, 1) < 0) {
+    if (poll(pfd, 6, 10) < 0) {
       printf("poll error\n");
       break;
     }
@@ -389,7 +389,7 @@ int main(int argc, char *argv[]) {
 
     if (has_host && !is_connected) {
       if (connect_to_host() < 0) {
-        usleep(500 * 1000);
+        usleep(100 * 1000);
       } else {
         printf("connected to host\n");
         is_connected = 1;
