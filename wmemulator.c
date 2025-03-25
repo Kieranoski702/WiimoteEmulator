@@ -389,7 +389,7 @@ int main(int argc, char *argv[]) {
 
     if (has_host && !is_connected) {
       if (connect_to_host() < 0) {
-        usleep(100 * 1000);
+        usleep(500 * 1000);
       } else {
         printf("connected to host\n");
         is_connected = 1;
