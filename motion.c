@@ -20,7 +20,8 @@ static const uint16_t accelerometer_unit = 0x6C;
 
 void look_at_pointer(mat4 *wiimote_mat, float pointer_x, float pointer_y) {
   vec3 pointer_world = {(pointer_x - 0.5) * screen_width,
-                        (pointer_y - 0.5) * screen_width, -screen_distance};
+                        (pointer_y - 0.5) * screen_width / screen_aspect,
+                        -screen_distance};
 
   vec3 dir = {pointer_world.x, pointer_world.y, pointer_world.z};
   vec3_normalize(&dir);
@@ -34,7 +35,7 @@ void look_at_pointer(mat4 *wiimote_mat, float pointer_x, float pointer_y) {
 
   vec3 y;
   vec3_cross(&y, &z, &x);
-  // vec3_normalize(&y);
+  vec3_normalize(&y);
 
   wiimote_mat->v0 = (vec4){x.x, x.y, x.z, 0.0};
   wiimote_mat->v1 = (vec4){y.x, y.y, y.z, 0.0};
