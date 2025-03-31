@@ -16,6 +16,9 @@ float pointer_x = 0.5;
 float pointer_y = 0.5;
 static const uint16_t accelerometer_zero = 0x85 << 2;
 static const uint16_t accelerometer_unit = 0x6C;
+static struct timeval pending_ir_ts = {0, 0};
+static struct timeval pending_accel_ts = {0, 0};
+static struct timeval pending_button_ts = {0, 0};
 
 int input_update(struct wiimote_state *state,
                  struct input_source const *source) {
@@ -64,6 +67,7 @@ int input_update(struct wiimote_state *state,
     invalid:
       break;
     case INPUT_EVENT_TYPE_BUTTON: {
+      pending_button_ts = event.ts;
       bool pressed = event.button_event.pressed;
       switch (event.button_event.button) {
       case INPUT_BUTTON_HOME:
@@ -192,6 +196,7 @@ int input_update(struct wiimote_state *state,
          * 1023); */
         /* state->usr.ir_object[0].y = round(event.analog_motion_event.y * 767);
          */
+        pending_ir_ts = event.ts;
         pointer_x = event.analog_motion_event.x;
         pointer_y = event.analog_motion_event.y;
         /* Map the IR z value to a size between, say, 1 and 15.
@@ -222,6 +227,7 @@ int input_update(struct wiimote_state *state,
         /*     accelerometer_zero + */
         /*     (int)round(accelerometer_unit * -event.analog_motion_event.y); */
 
+        pending_accel_ts = event.ts;
         state->usr.accel_x = event.analog_motion_event.x;
         state->usr.accel_y = event.analog_motion_event.y;
         state->usr.accel_z = event.analog_motion_event.z;

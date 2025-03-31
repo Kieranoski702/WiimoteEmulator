@@ -33,6 +33,12 @@ int sdp_fd, ctrl_fd, int_fd;
 int sock_sdp_fd, sock_ctrl_fd, sock_int_fd;
 
 static int is_connected = 0;
+static uint64_t total_ir_latency = 0;
+static uint64_t count_ir = 0;
+static uint64_t total_accel_latency = 0;
+static uint64_t count_accel = 0;
+static uint64_t total_button_latency = 0;
+static uint64_t count_button = 0;
 
 // signal handler to break out of main loop
 static int running = 1;
@@ -371,6 +377,39 @@ int main(int argc, char *argv[]) {
 
     if (is_connected && send_report_now) {
       if (pfd[5].revents & POLLOUT) {
+        // Get the time right before (or after) sending the report:
+        struct timeval send_time;
+        gettimeofday(&send_time, NULL);
+
+        // If there is a pending IR event, compute latency:
+        if (pending_ir_ts.tv_sec != 0 || pending_ir_ts.tv_usec != 0) {
+          uint64_t latency =
+              (send_time.tv_sec - pending_ir_ts.tv_sec) * 1000000 +
+              (send_time.tv_usec - pending_ir_ts.tv_usec);
+          total_ir_latency += latency;
+          count_ir++;
+          // Clear the pending timestamp
+          pending_ir_ts.tv_sec = pending_ir_ts.tv_usec = 0;
+        }
+        // Similarly for accelerometer events:
+        if (pending_accel_ts.tv_sec != 0 || pending_accel_ts.tv_usec != 0) {
+          uint64_t latency =
+              (send_time.tv_sec - pending_accel_ts.tv_sec) * 1000000 +
+              (send_time.tv_usec - pending_accel_ts.tv_usec);
+          total_accel_latency += latency;
+          count_accel++;
+          pending_accel_ts.tv_sec = pending_accel_ts.tv_usec = 0;
+        }
+        // And for button events:
+        if (pending_button_ts.tv_sec != 0 || pending_button_ts.tv_usec != 0) {
+          uint64_t latency =
+              (send_time.tv_sec - pending_button_ts.tv_sec) * 1000000 +
+              (send_time.tv_usec - pending_button_ts.tv_usec);
+          total_button_latency += latency;
+          count_button++;
+          pending_button_ts.tv_sec = pending_button_ts.tv_usec = 0;
+        }
+
         len = generate_report(&state, buf);
         if (len > 0) {
           print_report(buf, len);
@@ -396,6 +435,17 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+
+  printf("Latency statistics:\n");
+  if (count_ir > 0)
+    printf("  IR:         average %llu µs (%llu samples)\n",
+           total_ir_latency / count_ir, count_ir);
+  if (count_accel > 0)
+    printf("  Accelerometer: average %llu µs (%llu samples)\n",
+           total_accel_latency / count_accel, count_accel);
+  if (count_button > 0)
+    printf("  Button:     average %llu µs (%llu samples)\n",
+           total_button_latency / count_button, count_button);
 
   printf("cleaning up...\n");
 

@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include "wiimote.h"
+#include <bits/types/struct_timeval.h>
 #include <stdbool.h>
 
 #define PI 3.141592654
@@ -116,6 +117,7 @@ struct input_event {
     struct input_button_event button_event;
     struct input_analog_motion_event analog_motion_event;
   };
+  struct timeval ts;
 };
 
 struct input_source {

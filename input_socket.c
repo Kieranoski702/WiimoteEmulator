@@ -1,5 +1,6 @@
 #include "input_socket.h"
 #include "motion.h"
+#include "sys/time.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netdb.h>
@@ -123,6 +124,7 @@ static bool input_socket_poll_event(struct input_event *event) {
     event->analog_motion_event.x = ir_x;
     event->analog_motion_event.y = ir_y;
     /* event->analog_motion_event.z = ir_z; */
+    gettimeofday(&event->ts, NULL);
     buf_len = 0;
     return true;
   }
@@ -143,6 +145,7 @@ static bool input_socket_poll_event(struct input_event *event) {
     event->analog_motion_event.x = ax;
     event->analog_motion_event.y = ay;
     event->analog_motion_event.z = az;
+    gettimeofday(&event->ts, NULL);
     buf_len = 0;
     return true;
   } else {
@@ -158,6 +161,7 @@ static bool input_socket_poll_event(struct input_event *event) {
       buf_len = 0;
       return false;
     }
+    gettimeofday(&event->ts, NULL);
 
     if (strcmp(event_type_s, "emulator_control") == 0) {
       event->type = INPUT_EVENT_TYPE_EMULATOR_CONTROL;
