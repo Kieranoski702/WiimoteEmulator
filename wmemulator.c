@@ -16,6 +16,7 @@
 
 #include "adapter.h"
 #include "input.h"
+#include "input_latency.h"
 #include "input_sdl.h"
 #include "input_socket.h"
 #include "sdp.h"

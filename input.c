@@ -1,6 +1,7 @@
 #include "input.h"
 
 #include "SDL/SDL.h"
+#include "input_latency.h"
 #include "motion.h"
 #include <math.h>
 
@@ -16,9 +17,9 @@ float pointer_x = 0.5;
 float pointer_y = 0.5;
 static const uint16_t accelerometer_zero = 0x85 << 2;
 static const uint16_t accelerometer_unit = 0x6C;
-static struct timeval pending_ir_ts = {0, 0};
-static struct timeval pending_accel_ts = {0, 0};
-static struct timeval pending_button_ts = {0, 0};
+struct timeval pending_ir_ts = {0, 0};
+struct timeval pending_accel_ts = {0, 0};
+struct timeval pending_button_ts = {0, 0};
 
 int input_update(struct wiimote_state *state,
                  struct input_source const *source) {
