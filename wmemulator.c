@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
       pfd[5].events |= POLLOUT;
     }
 
-    if (poll(pfd, 6, 15) < 0) {
+    if (poll(pfd, 6, 20) < 0) {
       printf("poll error\n");
       break;
     }
